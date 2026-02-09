@@ -1,6 +1,6 @@
 FROM node:20-slim
 
-# متطلبات Chromium / Puppeteer
+# متطلبات Chromium
 RUN apt-get update && apt-get install -y \
   chromium \
   wget \
@@ -30,7 +30,10 @@ WORKDIR /app
 
 COPY . .
 
-# ⭐ الحل هنا
+# 👇 نثبت TypeScript يدوي
+RUN npm install -g typescript
+
+# 👇 نثبت dependencies بدون husky
 RUN npm install --legacy-peer-deps --ignore-scripts
 
 EXPOSE 21465

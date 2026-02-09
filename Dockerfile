@@ -1,6 +1,6 @@
 FROM node:20-slim
 
-# تثبيت كل متطلبات Puppeteer / Chromium
+# متطلبات Chromium / Puppeteer
 RUN apt-get update && apt-get install -y \
   chromium \
   wget \
@@ -22,21 +22,17 @@ RUN apt-get update && apt-get install -y \
   --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
-# إعداد Puppeteer لاستخدام Chromium المثبت
+ENV NODE_ENV=production
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
-ENV NODE_ENV=production
 
 WORKDIR /app
 
-# نسخ ملفات المشروع
 COPY . .
 
-# تثبيت الاعتمادات (package.json موجود بالفعل)
-RUN npm install --legacy-peer-deps
+# ⭐ الحل هنا
+RUN npm install --legacy-peer-deps --ignore-scripts
 
-# البورت (مش إجباري لو مش عامل API)
 EXPOSE 21465
 
-# تشغيل المشروع
 CMD ["npm", "start"]

@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y \
   --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
+# ⛔ عطّل husky نهائيًا
+ENV HUSKY=0
+
 ENV NODE_ENV=production
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
@@ -28,10 +31,10 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 WORKDIR /app
 COPY . .
 
-# 👇 ثبت mocha types صراحة
+# مهم: ثبت mocha types
 RUN npm install --save-dev @types/mocha
 
-# 👇 ثبت dependencies (من غير ignore-scripts)
+# ثبت dependencies بدون ما husky يشتغل
 RUN npm install --legacy-peer-deps
 
 EXPOSE 21465

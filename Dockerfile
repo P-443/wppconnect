@@ -1,9 +1,8 @@
-FROM node:20-slim
+FROM node:18-slim
 
-# متطلبات Chromium
+# Chromium dependencies
 RUN apt-get update && apt-get install -y \
   chromium \
-  wget \
   ca-certificates \
   fonts-liberation \
   libasound2 \
@@ -27,15 +26,13 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 WORKDIR /app
-
 COPY . .
 
-# 👇 نثبت TypeScript يدوي
-RUN npm install -g typescript
+# 👇 ثبت mocha types صراحة
+RUN npm install --save-dev @types/mocha
 
-# 👇 نثبت dependencies بدون husky
-RUN npm install --legacy-peer-deps --ignore-scripts
+# 👇 ثبت dependencies (من غير ignore-scripts)
+RUN npm install --legacy-peer-deps
 
 EXPOSE 21465
-
 CMD ["npm", "start"]
